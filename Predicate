@@ -1,0 +1,35 @@
+package com.demo;
+
+@FunctionalInterface
+public interface Predicate<T> {
+    
+    boolean test(T t);
+    
+    static <E> Predicate<E> isEqualsTo(E t){
+	
+	return s -> s.equals(t);
+	/*return new Predicate<E>() {
+	    public boolean test(E e) {
+		return e.equals(t);
+	    }
+	};*/
+	//return (s) -> {return s.equals(t);};
+    }
+    
+    default Predicate<T> or(Predicate<T> p){
+	return (s) -> test(s) || p.test(s);
+	
+    }
+        
+    default Predicate<T> and(Predicate<T> p){
+	return (s)-> {return test(s) && p.test(s);};
+	/*return new Predicate<T>() {
+	    public boolean test(T s) {
+		System.out.println("insyd anonym=="+s);
+		return test(s) && p.test(s);
+	    }
+	};*/
+	
+    }
+
+}
